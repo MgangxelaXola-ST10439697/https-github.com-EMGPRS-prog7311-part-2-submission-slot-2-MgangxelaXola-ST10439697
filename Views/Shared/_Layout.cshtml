@@ -1,0 +1,465 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] – Global Logistics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --navy: #0b1120;
+            --navy2: #131d30;
+            --panel: #192136;
+            --border: #243050;
+            --accent: #f0a500;
+            --accent2: #e06c00;
+            --text: #d8e2f0;
+            --muted: #6b7fa3;
+            --danger: #e05555;
+            --success: #3db87a;
+            --info: #3a9bd5;
+            --radius: 6px;
+        }
+
+        body {
+            font-family: 'Barlow', sans-serif;
+            background: var(--navy);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── NAV ── */
+        nav {
+            background: var(--navy2);
+            border-bottom: 2px solid var(--accent);
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            height: 58px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-brand {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+            color: var(--accent);
+            text-decoration: none;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: .25rem;
+            flex: 1;
+        }
+
+            .nav-links a {
+                color: var(--muted);
+                text-decoration: none;
+                padding: .4rem .9rem;
+                border-radius: var(--radius);
+                font-size: .875rem;
+                font-weight: 500;
+                letter-spacing: .04em;
+                transition: color .2s, background .2s;
+            }
+
+                .nav-links a:hover, .nav-links a.active {
+                    color: var(--accent);
+                    background: rgba(240,165,0,.1);
+                }
+
+        /* ── MAIN ── */
+        main {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* ── PAGE HEADER ── */
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.75rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+            .page-header h1 {
+                font-family: 'Barlow Condensed', sans-serif;
+                font-size: 2rem;
+                font-weight: 700;
+                letter-spacing: .06em;
+                text-transform: uppercase;
+                color: var(--text);
+            }
+
+                .page-header h1 span {
+                    color: var(--accent);
+                }
+
+        /* ── CARDS / PANELS ── */
+        .card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+        }
+
+        /* ── TABLE ── */
+        .tbl-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: .9rem;
+        }
+
+        thead tr {
+            border-bottom: 2px solid var(--accent);
+        }
+
+        th {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: .8rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            padding: .65rem 1rem;
+            text-align: left;
+        }
+
+        td {
+            padding: .75rem 1rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        tbody tr:hover {
+            background: rgba(255,255,255,.03);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ── BUTTONS ── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            padding: .45rem 1rem;
+            border-radius: var(--radius);
+            border: none;
+            font-size: .85rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: opacity .2s, transform .1s;
+            white-space: nowrap;
+        }
+
+            .btn:hover {
+                opacity: .85;
+                transform: translateY(-1px);
+            }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #000;
+        }
+
+        .btn-secondary {
+            background: var(--border);
+            color: var(--text);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: #fff;
+        }
+
+        .btn-info {
+            background: var(--info);
+            color: #fff;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: #fff;
+        }
+
+        .btn-sm {
+            padding: .3rem .7rem;
+            font-size: .8rem;
+        }
+
+        /* ── FORMS ── */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: .4rem;
+        }
+
+            .form-group.full {
+                grid-column: 1 / -1;
+            }
+
+        label {
+            font-size: .8rem;
+            letter-spacing: .06em;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        input, select, textarea {
+            background: var(--navy2);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: var(--radius);
+            padding: .55rem .85rem;
+            font-size: .9rem;
+            font-family: inherit;
+            width: 100%;
+            transition: border-color .2s;
+        }
+
+            input:focus, select:focus, textarea:focus {
+                outline: none;
+                border-color: var(--accent);
+            }
+
+            input[type="file"] {
+                padding: .4rem;
+            }
+
+        textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        select option {
+            background: var(--panel);
+        }
+
+        /* ── VALIDATION ── */
+        .field-validation-error {
+            color: var(--danger);
+            font-size: .8rem;
+            margin-top: .2rem;
+        }
+
+        .validation-summary-errors ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .validation-summary-errors li, .validation-summary-errors {
+            color: var(--danger);
+            font-size: .85rem;
+        }
+
+        /* ── ALERTS ── */
+        .alert {
+            padding: .85rem 1.1rem;
+            border-radius: var(--radius);
+            margin-bottom: 1.25rem;
+            font-size: .9rem;
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+        }
+
+        .alert-success {
+            background: rgba(61,184,122,.15);
+            border: 1px solid var(--success);
+            color: var(--success);
+        }
+
+        .alert-danger {
+            background: rgba(224,85,85,.15);
+            border: 1px solid var(--danger);
+            color: var(--danger);
+        }
+
+        .alert-info {
+            background: rgba(58,155,213,.15);
+            border: 1px solid var(--info);
+            color: var(--info);
+        }
+
+        /* ── BADGES ── */
+        .badge {
+            display: inline-block;
+            padding: .2rem .6rem;
+            border-radius: 999px;
+            font-size: .75rem;
+            font-weight: 600;
+            letter-spacing: .04em;
+        }
+
+        .badge-active {
+            background: rgba(61,184,122,.2);
+            color: var(--success);
+        }
+
+        .badge-draft {
+            background: rgba(58,155,213,.2);
+            color: var(--info);
+        }
+
+        .badge-expired {
+            background: rgba(224,85,85,.2);
+            color: var(--danger);
+        }
+
+        .badge-hold {
+            background: rgba(240,165,0,.2);
+            color: var(--accent);
+        }
+
+        .badge-pending {
+            background: rgba(240,165,0,.2);
+            color: var(--accent);
+        }
+
+        .badge-progress {
+            background: rgba(58,155,213,.2);
+            color: var(--info);
+        }
+
+        .badge-completed {
+            background: rgba(61,184,122,.2);
+            color: var(--success);
+        }
+
+        .badge-cancelled {
+            background: rgba(224,85,85,.2);
+            color: var(--danger);
+        }
+
+        /* ── DETAIL GRID ── */
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+
+        .detail-item label {
+            display: block;
+            font-size: .75rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .07em;
+            margin-bottom: .3rem;
+        }
+
+        .detail-item p {
+            font-size: .95rem;
+        }
+
+        /* ── FILTER BAR ── */
+        .filter-bar {
+            display: flex;
+            gap: .75rem;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+            .filter-bar .form-group {
+                min-width: 160px;
+                flex: 1;
+                margin: 0;
+            }
+
+        /* ── ACTION ROW ── */
+        .action-row {
+            display: flex;
+            gap: .5rem;
+            flex-wrap: wrap;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            text-align: center;
+            padding: 1rem;
+            font-size: .78rem;
+            color: var(--muted);
+            border-top: 1px solid var(--border);
+        }
+
+        @@media (max-width: 700px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: .75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a class="nav-brand" asp-controller="Home" asp-action="Index">⬡ Global Logistics</a>
+        <div class="nav-links">
+            <a asp-controller="Home" asp-action="Index">Dashboard</a>
+            <a asp-controller="Client" asp-action="Index">Clients</a>
+            <a asp-controller="Contract" asp-action="Index">Contracts</a>
+            <a asp-controller="ServiceRequests" asp-action="Index">Service Requests</a>
+        </div>
+    </nav>
+
+    <main>
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">✔ @TempData["SuccessMessage"]</div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">✖ @TempData["ErrorMessage"]</div>
+        }
+
+        @RenderBody()
+    </main>
+
+    <footer>&copy; @DateTime.Now.Year Global Logistics Management System</footer>
+</body>
+</html>

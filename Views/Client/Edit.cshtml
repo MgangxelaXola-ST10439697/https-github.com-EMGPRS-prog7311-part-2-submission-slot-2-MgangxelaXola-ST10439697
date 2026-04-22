@@ -1,0 +1,39 @@
+﻿@model Global_Logistics_Managemant_System_POE.Models.Client
+@{
+    ViewData["Title"] = "Edit Client";
+}
+
+<div class="page-header">
+    <h1>Edit <span>Client</span></h1>
+    <a class="btn btn-secondary" asp-action="Index">&#8592; Back</a>
+</div>
+
+<div class="card" style="max-width:720px;">
+    <div asp-validation-summary="ModelOnly" class="validation-summary-errors" style="margin-bottom:1rem;"></div>
+
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="ClientId" />
+        <div class="form-grid">
+            <div class="form-group">
+                <label asp-for="ClientName">Client Name</label>
+                <input asp-for="ClientName" />
+                <span asp-validation-for="ClientName" class="field-validation-error"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Region">Region</label>
+                <input asp-for="Region" />
+                <span asp-validation-for="Region" class="field-validation-error"></span>
+            </div>
+            <div class="form-group full">
+                <label asp-for="ContactDetails">Contact Details</label>
+                <textarea asp-for="ContactDetails"></textarea>
+                <span asp-validation-for="ContactDetails" class="field-validation-error"></span>
+            </div>
+        </div>
+
+        <div style="margin-top:1.5rem;display:flex;gap:.75rem;">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a class="btn btn-secondary" asp-action="Index">Cancel</a>
+        </div>
+    </form>
+</div>

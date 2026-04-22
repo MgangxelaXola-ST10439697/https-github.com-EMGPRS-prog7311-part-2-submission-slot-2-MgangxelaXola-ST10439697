@@ -1,0 +1,126 @@
+﻿@model Global_Logistics_Managemant_System_POE.Models.Contract
+@{
+    ViewData["Title"] = "Contract Details";
+    bool isSla = Model is Global_Logistics_Managemant_System_POE.Patterns.Factory.SLAContract;
+    var sla = Model as Global_Logistics_Managemant_System_POE.Patterns.Factory.SLAContract;
+    var badgeClass = Model.Status switch
+    {
+        "Active" => "badge-active",
+        "Draft" => "badge-draft",
+        "Expired" => "badge-expired",
+        "On Hold" => "badge-hold",
+        _ => "badge-draft"
+    };
+}
+
+<div class="page-header">
+    <h1>Contract <span>#@Model.ContractId</span></h1>
+    <div class="action-row">
+        <a class="btn btn-info" asp-action="Edit" asp-route-id="@Model.ContractId">Edit</a>
+        <a class="btn btn-secondary" asp-action="Index">&#8592; Back</a>
+    </div>
+</div>
+
+<div class="card" style="margin-bottom:1.5rem;">
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:1rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;">Contract Information</div>
+    <div class="detail-grid">
+        <div class="detail-item">
+            <label>Client</label>
+            <p>@Model.Client?.ClientName</p>
+        </div>
+        <div class="detail-item">
+            <label>Status</label>
+            <p><span class="badge @badgeClass">@Model.Status</span></p>
+        </div>
+        <div class="detail-item">
+            <label>Start Date</label>
+            <p>@Model.StartDate.ToString("dd MMM yyyy")</p>
+        </div>
+        <div class="detail-item">
+            <label>End Date</label>
+            <p>@Model.EndDate.ToString("dd MMM yyyy")</p>
+        </div>
+        <div class="detail-item">
+            <label>Service Level</label>
+            <p>@Model.ServiceLevel</p>
+        </div>
+        <div class="detail-item">
+            <label>Contract Type</label>
+            <p>@(isSla ? "SLA Contract" : "Standard Contract")</p>
+        </div>
+        <div class="detail-item" style="grid-column:1/-1;">
+            <label>Signed Agreement</label>
+            @if (!string.IsNullOrEmpty(Model.SignedAgreementPath))
+            {
+                <p>
+                    <a class="btn btn-sm btn-secondary" asp-action="Download" asp-route-id="@Model.ContractId">&#8595; Download PDF</a>
+                </p>
+            }
+            else
+            {
+                <p style="color:var(--muted);">No agreement uploaded.</p>
+            }
+        </div>
+    </div>
+</div>
+
+@if (isSla && sla != null)
+{
+    <div class="card" style="margin-bottom:1.5rem;border-left:3px solid var(--accent);">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:1rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;">SLA Details</div>
+        <div class="detail-grid">
+            <div class="detail-item">
+                <label>Response Time</label>
+                <p>@sla.ResponseTime</p>
+            </div>
+            <div class="detail-item">
+                <label>Penalty Clause</label>
+                <p>@sla.PenaltyClause</p>
+            </div>
+            <div class="detail-item" style="grid-column:1/-1;">
+                <label>SLA Terms</label>
+                <p>@sla.SlaTerms</p>
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model.ServiceRequests != null && Model.ServiceRequests.Any())
+{
+    <div class="card">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:1rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;">Service Requests (@Model.ServiceRequests.Count)</div>
+        <div class="tbl-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Cost (USD)</th>
+                        <th>Cost (ZAR)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var sr in Model.ServiceRequests)
+                    {
+                        var srBadge = sr.Status switch
+                        {
+                            "Pending" => "badge-pending",
+                            "In Progress" => "badge-progress",
+                            "Completed" => "badge-completed",
+                            "Cancelled" => "badge-cancelled",
+                            _ => "badge-draft"
+                        };
+                        <tr>
+                            <td>#@sr.ServiceRequestId</td>
+                            <td>@sr.Description</td>
+                            <td><span class="badge @srBadge">@sr.Status</span></td>
+                            <td>$@sr.CostUSD.ToString("N2")</td>
+                            <td>R @sr.CostZAR.ToString("N2")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

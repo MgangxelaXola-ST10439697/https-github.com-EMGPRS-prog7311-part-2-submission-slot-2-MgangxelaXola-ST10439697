@@ -1,0 +1,46 @@
+﻿@model Global_Logistics_Managemant_System_POE.Models.ServiceRequest
+@{
+    ViewData["Title"] = "Service Request Details";
+    var badge = Model.Status switch
+    {
+        "Pending" => "badge-pending",
+        "In Progress" => "badge-progress",
+        "Completed" => "badge-completed",
+        "Cancelled" => "badge-cancelled",
+        _ => "badge-draft"
+    };
+}
+
+<div class="page-header">
+    <h1>Service Request <span>#@Model.ServiceRequestId</span></h1>
+    <div class="action-row">
+        <a class="btn btn-info" asp-action="Edit" asp-route-id="@Model.ServiceRequestId">Edit</a>
+        <a class="btn btn-secondary" asp-action="Index">&#8592; Back</a>
+    </div>
+</div>
+
+<div class="card">
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:1rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;">Request Information</div>
+    <div class="detail-grid">
+        <div class="detail-item">
+            <label>Status</label>
+            <p><span class="badge @badge">@Model.Status</span></p>
+        </div>
+        <div class="detail-item">
+            <label>Contract</label>
+            <p>#@Model.ContractId — @Model.Contract?.Client?.ClientName</p>
+        </div>
+        <div class="detail-item">
+            <label>Cost (USD)</label>
+            <p style="font-size:1.1rem;font-weight:600;color:var(--accent);">$@Model.CostUSD.ToString("N2")</p>
+        </div>
+        <div class="detail-item">
+            <label>Cost (ZAR)</label>
+            <p style="font-size:1.1rem;font-weight:600;color:var(--success);">R @Model.CostZAR.ToString("N2")</p>
+        </div>
+        <div class="detail-item" style="grid-column:1/-1;">
+            <label>Description</label>
+            <p>@Model.Description</p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+﻿@model Global_Logistics_Managemant_System_POE.Models.ServiceRequest
+@{
+    ViewData["Title"] = "Create Service Request";
+}
+
+<div class="page-header">
+    <h1>Create <span>Service Request</span></h1>
+    <a class="btn btn-secondary" asp-action="Index">&#8592; Back</a>
+</div>
+
+<div class="card" style="max-width:720px;">
+    <div asp-validation-summary="ModelOnly" class="validation-summary-errors" style="margin-bottom:1rem;"></div>
+
+    <div class="alert alert-info" style="margin-bottom:1.25rem;">
+        ℹ Only <strong>Active</strong> contracts are available. The cost will automatically be converted to ZAR using live exchange rates.
+    </div>
+
+    <form asp-action="Create" method="post">
+        <div class="form-grid">
+            <div class="form-group full">
+                <label>Contract (Active only)</label>
+                <select asp-for="ContractId" asp-items="ViewBag.Contracts">
+                    <option value="">-- Select Contract --</option>
+                </select>
+                <span asp-validation-for="ContractId" class="field-validation-error"></span>
+            </div>
+
+            <div class="form-group full">
+                <label asp-for="Description">Description</label>
+                <textarea asp-for="Description" placeholder="Describe the service request..."></textarea>
+                <span asp-validation-for="Description" class="field-validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CostUSD">Cost (USD)</label>
+                <input asp-for="CostUSD" type="number" step="0.01" min="0" placeholder="0.00" />
+                <span asp-validation-for="CostUSD" class="field-validation-error"></span>
+            </div>
+
+            <div class="form-group" style="justify-content:flex-end;">
+                <label style="visibility:hidden;">placeholder</label>
+                <p style="font-size:.82rem;color:var(--muted);padding:.5rem 0;">ZAR conversion will be calculated automatically on save.</p>
+            </div>
+        </div>
+
+        <div style="margin-top:1.5rem;display:flex;gap:.75rem;">
+            <button type="submit" class="btn btn-primary">Create Request</button>
+            <a class="btn btn-secondary" asp-action="Index">Cancel</a>
+        </div>
+    </form>
+</div>

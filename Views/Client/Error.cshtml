@@ -1,0 +1,26 @@
+﻿@model Global_Logistics_Managemant_System_POE.Models.ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="page-header">
+    <h1><span>Error</span></h1>
+</div>
+
+<div class="card" style="border-top:3px solid var(--danger); max-width:600px;">
+    <p style="color:var(--danger);font-size:1.1rem;margin-bottom:1rem;">An unexpected error occurred.</p>
+
+    @if (Model?.ShowRequestId == true)
+    {
+        <p style="color:var(--muted);font-size:.85rem;">
+            Request ID: <code style="color:var(--text);">@Model.RequestId</code>
+        </p>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger" style="margin-top:1rem;">@TempData["ErrorMessage"]</div>
+    }
+
+    <a class="btn btn-secondary" style="margin-top:1.25rem;" asp-controller="Home" asp-action="Index">&#8592; Back to Dashboard</a>
+</div>

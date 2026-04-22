@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="page-header">
+    <h1>Global <span>Logistics</span> Dashboard</h1>
+</div>
+
+<div style="display:grid; grid-template-columns: repeat(3,1fr); gap:1.25rem; margin-bottom:2rem;">
+    <div class="card" style="border-top:3px solid var(--accent);">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;">Clients</div>
+        <div style="font-size:2rem;font-weight:700;color:var(--accent);">&#128101;</div>
+        <p style="margin-top:.5rem;color:var(--muted);font-size:.85rem;">Manage client profiles and contracts.</p>
+        <a class="btn btn-primary" style="margin-top:1rem;" asp-controller="Client" asp-action="Index">View Clients</a>
+    </div>
+    <div class="card" style="border-top:3px solid var(--info);">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;">Contracts</div>
+        <div style="font-size:2rem;font-weight:700;color:var(--info);">&#128196;</div>
+        <p style="margin-top:.5rem;color:var(--muted);font-size:.85rem;">Create and track Standard &amp; SLA contracts.</p>
+        <a class="btn btn-info" style="margin-top:1rem;" asp-controller="Contract" asp-action="Index">View Contracts</a>
+    </div>
+    <div class="card" style="border-top:3px solid var(--success);">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;">Service Requests</div>
+        <div style="font-size:2rem;font-weight:700;color:var(--success);">&#128230;</div>
+        <p style="margin-top:.5rem;color:var(--muted);font-size:.85rem;">Track logistics service requests with live ZAR rates.</p>
+        <a class="btn btn-success" style="margin-top:1rem;" asp-controller="ServiceRequests" asp-action="Index">View Requests</a>
+    </div>
+</div>
+
+<div class="card">
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.75rem;">Quick Actions</div>
+    <div style="display:flex;gap:.75rem;flex-wrap:wrap;">
+        <a class="btn btn-primary" asp-controller="Client" asp-action="Create">+ New Client</a>
+        <a class="btn btn-info" asp-controller="Contract" asp-action="Create">+ New Contract</a>
+        <a class="btn btn-success" asp-controller="ServiceRequests" asp-action="Create">+ New Service Request</a>
+    </div>
+</div>

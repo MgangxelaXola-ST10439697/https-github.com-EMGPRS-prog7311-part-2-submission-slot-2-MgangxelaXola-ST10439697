@@ -1,0 +1,38 @@
+﻿@model Global_Logistics_Managemant_System_POE.Models.Client
+@{
+    ViewData["Title"] = "Create Client";
+}
+
+<div class="page-header">
+    <h1>Create <span>Client</span></h1>
+    <a class="btn btn-secondary" asp-action="Index">&#8592; Back</a>
+</div>
+
+<div class="card" style="max-width:720px;">
+    <div asp-validation-summary="ModelOnly" class="validation-summary-errors" style="margin-bottom:1rem;"></div>
+
+    <form asp-action="Create" method="post">
+        <div class="form-grid">
+            <div class="form-group">
+                <label asp-for="ClientName">Client Name</label>
+                <input asp-for="ClientName" placeholder="e.g. Acme Corp" />
+                <span asp-validation-for="ClientName" class="field-validation-error"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Region">Region</label>
+                <input asp-for="Region" placeholder="e.g. Southern Africa" />
+                <span asp-validation-for="Region" class="field-validation-error"></span>
+            </div>
+            <div class="form-group full">
+                <label asp-for="ContactDetails">Contact Details</label>
+                <textarea asp-for="ContactDetails" placeholder="Phone, email, address..."></textarea>
+                <span asp-validation-for="ContactDetails" class="field-validation-error"></span>
+            </div>
+        </div>
+
+        <div style="margin-top:1.5rem;display:flex;gap:.75rem;">
+            <button type="submit" class="btn btn-primary">Create Client</button>
+            <a class="btn btn-secondary" asp-action="Index">Cancel</a>
+        </div>
+    </form>
+</div>

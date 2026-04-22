@@ -1,0 +1,63 @@
+﻿@model Global_Logistics_Managemant_System_POE.Models.Contract
+@{
+    ViewData["Title"] = "Delete Contract";
+    var badgeClass = Model.Status switch
+    {
+        "Active" => "badge-active",
+        "Draft" => "badge-draft",
+        "Expired" => "badge-expired",
+        "On Hold" => "badge-hold",
+        _ => "badge-draft"
+    };
+}
+
+<div class="page-header">
+    <h1>Delete <span>Contract</span></h1>
+</div>
+
+<div class="card" style="max-width:600px;border-top:3px solid var(--danger);">
+    <div class="alert alert-danger">
+        ⚠ Are you sure you want to delete this contract? The signed agreement PDF will also be removed.
+    </div>
+
+    <div class="detail-grid" style="margin-bottom:1.5rem;">
+        <div class="detail-item">
+            <label>Contract ID</label>
+            <p>#@Model.ContractId</p>
+        </div>
+        <div class="detail-item">
+            <label>Client</label>
+            <p>@Model.Client?.ClientName</p>
+        </div>
+        <div class="detail-item">
+            <label>Start Date</label>
+            <p>@Model.StartDate.ToString("dd MMM yyyy")</p>
+        </div>
+        <div class="detail-item">
+            <label>End Date</label>
+            <p>@Model.EndDate.ToString("dd MMM yyyy")</p>
+        </div>
+        <div class="detail-item">
+            <label>Status</label>
+            <p><span class="badge @badgeClass">@Model.Status</span></p>
+        </div>
+        <div class="detail-item">
+            <label>Service Level</label>
+            <p>@Model.ServiceLevel</p>
+        </div>
+        @if (!string.IsNullOrEmpty(Model.SignedAgreementPath))
+        {
+            <div class="detail-item" style="grid-column:1/-1;">
+                <label>Signed Agreement</label>
+                <p style="color:var(--danger);">The attached PDF will be permanently deleted.</p>
+            </div>
+        }
+    </div>
+
+    <form asp-action="Delete" method="post" style="display:flex;gap:.75rem;">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="ContractId" />
+        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+        <a class="btn btn-secondary" asp-action="Index">Cancel</a>
+    </form>
+</div>

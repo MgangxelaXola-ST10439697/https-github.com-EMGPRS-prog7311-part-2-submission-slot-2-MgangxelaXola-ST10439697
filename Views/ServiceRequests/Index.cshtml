@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Global_Logistics_Managemant_System_POE.Models.ServiceRequest>
+@{
+    ViewData["Title"] = "Service Requests";
+}
+
+<div class="page-header">
+    <h1><span>Service</span> Requests</h1>
+    <a class="btn btn-primary" asp-action="Create">+ New Request</a>
+</div>
+
+<div class="card">
+    <div class="tbl-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Description</th>
+                    <th>Client</th>
+                    <th>Contract</th>
+                    <th>Status</th>
+                    <th>Cost (USD)</th>
+                    <th>Cost (ZAR)</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="8" style="text-align:center;color:var(--muted);padding:2rem;">
+                            No service requests yet. <a asp-action="Create" style="color:var(--accent);">Create one?</a>
+                        </td>
+                    </tr>
+                }
+                @foreach (var sr in Model)
+                {
+                    var badge = sr.Status switch
+                    {
+                        "Pending" => "badge-pending",
+                        "In Progress" => "badge-progress",
+                        "Completed" => "badge-completed",
+                        "Cancelled" => "badge-cancelled",
+                        _ => "badge-draft"
+                    };
+                    <tr>
+                        <td style="color:var(--muted);">#@sr.ServiceRequestId</td>
+                        <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">@sr.Description</td>
+                        <td>@sr.Contract?.Client?.ClientName</td>
+                        <td>#@sr.ContractId</td>
+                        <td><span class="badge @badge">@sr.Status</span></td>
+                        <td>$@sr.CostUSD.ToString("N2")</td>
+                        <td>R @sr.CostZAR.ToString("N2")</td>
+                        <td>
+                            <div class="action-row">
+                                <a class="btn btn-sm btn-secondary" asp-action="Details" asp-route-id="@sr.ServiceRequestId">Details</a>
+                                <a class="btn btn-sm btn-info" asp-action="Edit" asp-route-id="@sr.ServiceRequestId">Edit</a>
+                                <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@sr.ServiceRequestId">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

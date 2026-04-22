@@ -1,0 +1,113 @@
+﻿@model IEnumerable<Global_Logistics_Managemant_System_POE.Models.Contract>
+@{
+    ViewData["Title"] = "Contracts";
+}
+
+<div class="page-header">
+    <h1><span>Contracts</span></h1>
+    <a class="btn btn-primary" asp-action="Create">+ New Contract</a>
+</div>
+
+<form asp-action="Index" method="get">
+    <div class="filter-bar">
+        <div class="form-group">
+            <label>Status</label>
+            <select name="status">
+                <option value="">All Statuses</option>
+                @foreach (var s in new[] { "Draft", "Active", "Expired", "On Hold" })
+                {
+                    <option value="@s" selected="@(ViewBag.CurrencyStatus == s ? "selected" : null)">@s</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Start Date (from)</label>
+            <input type="date" name="startdate" value="@ViewBag.CurrencyStartDate" />
+        </div>
+        <div class="form-group">
+            <label>End Date (to)</label>
+            <input type="date" name="enddate" value="@ViewBag.CurrencyEndDate" />
+        </div>
+        <div style="display:flex;gap:.5rem;align-items:flex-end;padding-bottom:.05rem;">
+            <button type="submit" class="btn btn-primary">Filter</button>
+            <a class="btn btn-secondary" asp-action="Index">Clear</a>
+        </div>
+    </div>
+</form>
+
+<div class="card">
+    <div class="tbl-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Client</th>
+                    <th>Type</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Status</th>
+                    <th>Service Level</th>
+                    <th>Agreement</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="9" style="text-align:center;color:var(--muted);padding:2rem;">
+                            No contracts found. <a asp-action="Create" style="color:var(--accent);">Create one?</a>
+                        </td>
+                    </tr>
+                }
+                @foreach (var contract in Model)
+                {
+                    var badgeClass = contract.Status switch
+                    {
+                        "Active" => "badge-active",
+                        "Draft" => "badge-draft",
+                        "Expired" => "badge-expired",
+                        "On Hold" => "badge-hold",
+                        _ => "badge-draft"
+                    };
+                    bool isSla = contract is Global_Logistics_Managemant_System_POE.Patterns.Factory.SLAContract;
+                    <tr>
+                        <td style="color:var(--muted);">#@contract.ContractId</td>
+                        <td style="font-weight:500;">@contract.Client?.ClientName</td>
+                        <td>
+                            @if (isSla)
+                            {
+                                <span class="badge badge-active">SLA</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-draft">Standard</span>
+                            }
+                        </td>
+                        <td>@contract.StartDate.ToString("dd MMM yyyy")</td>
+                        <td>@contract.EndDate.ToString("dd MMM yyyy")</td>
+                        <td><span class="badge @badgeClass">@contract.Status</span></td>
+                        <td>@contract.ServiceLevel</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(contract.SignedAgreementPath))
+                            {
+                                <a class="btn btn-sm btn-secondary" asp-action="Download" asp-route-id="@contract.ContractId">&#8595; PDF</a>
+                            }
+                            else
+                            {
+                                <span style="color:var(--muted);font-size:.8rem;">None</span>
+                            }
+                        </td>
+                        <td>
+                            <div class="action-row">
+                                <a class="btn btn-sm btn-secondary" asp-action="Details" asp-route-id="@contract.ContractId">Details</a>
+                                <a class="btn btn-sm btn-info" asp-action="Edit" asp-route-id="@contract.ContractId">Edit</a>
+                                <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@contract.ContractId">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
